@@ -1,0 +1,9 @@
+{
+  "name": "gInput",
+  "description": "Tools required in almost all web app",
+  "version": "2.0.1",
+  "private": true,
+  "dependencies": {
+    "db-mysql" : "x"
+  }
+}
