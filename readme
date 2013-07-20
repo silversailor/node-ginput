@@ -1,0 +1,7 @@
+Utilitaire pour accès à une base de données (mysql dans ce cas-ci) depuis nodejs.
+
+La construction des requêtes va se faire du côté du client.
+En résumé, il est possible de choisir les tables désiré, jointé sur les champs désiré,
+ avec les champs voulu, en pouvant appeler des fonctions d'aggrégat sur ces derniers.
+ Une gestion en profondeur des clauses "Where" et "Having" est aussi prise en charge.
+
