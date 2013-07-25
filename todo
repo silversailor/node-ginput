@@ -1,0 +1,9 @@
+Ajouter de la sécurité pour pouvoir limiter les champs / table accessible depuis une page
+Implémentation des fonctionnalitées d'ajout, de mise a jour et de suppression (avec sécurité paramêtrable)
+
+Implémentation d'une structure html (avec attribut quaractéristique) pour chargement automatique de certaine partie de la page
+Mise en place d'une méthode de rafraichissement qui permet de mettre a jour des valeurs modifiés depuis une autre page lorsqu'elle se trouve dans l'application courante.
+   -> par exemple: lorsque le prénom de l'utilisateur #4 est modifier, le rafraichissement devrait s'effectuer partout où la valeur est contenue.
+       -> A voir lors de la mise en place de la structure html
+Implémentation d'une méthode permettant de guarder la liste des éléments afficher sur quel client. (Dans le but de pouvoir guarder ces valeurs a jours, notifier les clients)
+   donner un id a chaqu'une des zones pouvant rafraichir les données et guarder l'id le plus élevé de requête de rafraichissement (actuellement passer dans le data de socket.emit("get"))
