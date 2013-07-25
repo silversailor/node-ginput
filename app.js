@@ -66,7 +66,8 @@ io.sockets.on( "connection", function ( socket ) {
         }
         ,error:function( error ) {
           socket.emit( "get-error", {id:request.id, error: error} );
-          gi.log( " with " + __data("name") + " : " + dump(error), "ERROR" );
+          gi.log( " with " + __data("name") + " : " + gi.dump(error), "ERROR" );
+          gi.log( " request: " + gi.dump(request), "PARAM" );
         }
       })
     })
