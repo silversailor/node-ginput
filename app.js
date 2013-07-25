@@ -32,6 +32,7 @@ io.sockets.on( "connection", function ( socket ) {
     gi.each(data,function(i,e){
       __data(i,e);  
     });
+    gi.log("Client identified, " + gi.dump(__data.data).replace(/\n/g,"\t"),"notice");
   });
   socket.on( "get", function ( data ) {
     /*
