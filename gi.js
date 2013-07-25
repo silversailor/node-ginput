@@ -72,6 +72,7 @@ var colors = require("colors")
   }
 };
 
+
 function parse( data ) {
   var result = {
     table : parse.table( data.table )
@@ -280,7 +281,7 @@ function obj() {
 }
 function log(msg, type){
   if(conf.data.debug) {
-    var t = (type?type+":":"") + msg
+    var t = (type?type+"  - ":"") + msg
       , c = log.colors((type?type:"").toLowerCase())
     ;
     console.log( c ? t[c] : t );
