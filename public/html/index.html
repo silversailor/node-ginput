@@ -1,7 +1,16 @@
-<script src="/socket.io/socket.io.js"></script>
-<script src="/vendor/jquery.min.js"></script>
-<script src="/assets/gi.js"></script>
-<script>
-	gi.init();
-</script>
-Hello World!
+<html>
+	<head>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/vendor/jquery.min.js"></script>
+		<script src="/assets/gi.js"></script>
+		<script> gi.init(); </script>
+	</head>
+	<body>
+		var select = gi.select().from("user").from("car").join("LEFT").on("fk_user","pk_user")
+		.field("owner","CONCAT(first_name,' ' ,last_name)").field("last_name")
+		.field("nb_car","pk_car").aggregate("COUNT")
+		.field("last_name").do_return(false).where("=","Robidoux").group("1.1").operator("OR")
+		.field("first_name").do_return(false).where("=","Guylaine").group("1.1")
+		.do_log().get();
+	</body>
+</html>
