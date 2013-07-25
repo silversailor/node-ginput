@@ -7,7 +7,7 @@ var sql = require("./gi-mysql.js")
   , io = require('socket.io').listen(server)
 
 ;
-
+io.set('log level', 1);
 gi.conf("debug",true);
 sql.connect(db_info.host,db_info.user,db_info.password,db_info.database);
 
