@@ -50,7 +50,8 @@ function gen.select(data)
                 {operator} => {string} {optionnal} {default: "="} operator to use (.on{key} .on{key}.operator .on{key}.name)
 }*/
 
-var undef, is = {
+var colors = require("colors")
+  , undef, is = {
   object : function( o ) { return typeof( o ) === "object" && o; }
   ,function : function( f ) { return typeof( f ) === "function"; }
   ,array : function( a ) { return is.object( a ) && typeof( a.length ) === "number"; }
@@ -84,7 +85,7 @@ parse._each = function ( fct, data, defaults) {
     if( r = fct(e, i, result) ) {
       result[ i ] = r;
     } else {
-      console.log("Error while parsing data["+i+"]");
+      gi.log("Error while parsing data["+i+"]","warning");
     }
   });
 
@@ -233,7 +234,7 @@ gen.select = function (data){
   , having : new FilterGroup()
   };
   each( parsed.field, function(alias, field) {
-    var name = conf.alias_in_where ? field.alias : field.getName();
+    var name = conf("alias_in_where") ? field.alias : field.getName();
     each( ["where","having"], function(i,type){
       each( field[type], function(operation, filter_data) {
         switch( operation ) {
@@ -256,7 +257,7 @@ gen.select = function (data){
   each(parsed.field, function(i,field) { return !( do_group = (field.aggregate ? true : false) )});
   if( where.sql ) { statement += " WHERE " + where.sql; }
   if(do_group) {
-    statement += " GROUP BY " + map( parsed.field, function(field){ return field.aggregate ? null : (conf.alias_in_where ? field.alias : field.name) }).join(",");
+    statement += " GROUP BY " + map( parsed.field, function(field){ return field.aggregate ? null : (conf("alias_in_group") ? field.alias : field.name) }).join(",");
   }
   if( having.sql ) { statement += " HAVING " + having.sql; }
 
@@ -278,11 +279,36 @@ function obj() {
   return r;
 }
 function log(msg, type){
-  if(conf.debug) {
-    console.log( (type?type+":":"") +  msg);
+  if(conf.data.debug) {
+    var t = (type?type+":":"") + msg
+      , c = log.colors((type?type:"").toLowerCase())
+    ;
+    console.log( c ? t[c] : t );
   }
   return msg;
 }
+
+log.colors = configuratioN({
+  /*
+    bold
+    italic
+    underline
+    inverse
+    yellow
+    cyan
+    white
+    magenta
+    green
+    red
+    grey
+    blue
+    rainbow
+    */
+  "":"white"
+  ,notice:"cyan"
+  ,error:"red"
+  ,warning:"yellow"
+})
 function each( o, f ){
   if( is.object(o) ){
     if( is.number(o.length) ) {
@@ -394,7 +420,7 @@ function throw_up( o, k ) {
   });
   return result;
 }
-var conf = configuratioN({"alias_in_where": false});
+var conf = configuratioN({"alias_in_where": false, "alias_in_group": false, "debug":false});
 
 module.exports = {
    is : is
