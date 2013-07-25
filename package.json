@@ -6,5 +6,7 @@
   "dependencies": {
     "mysql" : "x"
     ,"colors" : "x"
+    ,"socket.io" : "x"
+    ,"express" : "x"
   }
 }
