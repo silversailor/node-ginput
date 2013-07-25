@@ -13,7 +13,7 @@ var gi = require("./gi.js")
     , error ( msg )
 */
 
-gi.conf("alias_in_where",true);
+gi.conf("alias_in_group",true);
 
 function select( data, cb ) {
   var parsed = gi.gen.select( data )
@@ -39,19 +39,22 @@ Query.prototype.exec = function(statement, values){
       me.events.emit("error",gi.log("while getting connection. err dump: " + gi.dump(err), "ERROR"));
       return;
     }
-    var _fields = {};
+    var _fields = {count:0};
+    gi.log(statement,"EXEC");
+    gi.log(gi.dump(values).replace(/\n/g, "\t"),"PARAM");
     connection.query( statement, values )
     .on('fields', function(fields, index) {
-      _fields[index] = { raw : {}, count : 0, arr : map(fields,function(e){ return e.name }) };
-      each(fields,function(i,e){ _fields[index].raw[e.name] = e });
+      _fields[index] = { raw : {}, count : 0, arr : gi.map(fields,function(e){ return e.name }) };
+      gi.each(fields,function(i,e){ _fields[index].raw[e.name] = e });
       me.events.emit("begin",_fields[index]);
     }).on("result",function(row, index){
-      me.events.emit("row",throw_up(row, _fields[index].arr), _fields[index].count++, _fields[index].raw );
+      _fields.count++;
+      me.events.emit("row",gi.throw_up(row, _fields[index].arr), _fields[index].count++, _fields[index].raw );
     }).on("end",function(){
-      me.events.emit("end");
+      me.events.emit("end",_fields.count);
       connection.end();
     }).on("error",function(err){
-      me.events.emit("error", gi.log( "while executing query, error dump:" + dump(err), "ERROR" ) );
+      me.events.emit("error", gi.log( "while executing query, error dump:" + gi.dump(err), "ERROR" ) );
     });
   })
 };
@@ -71,6 +74,10 @@ pool.connect = function(host, username, password, database) {
     throw  gi.log( "Multiple pool connection", "WARNING" );
   }
 };
+
+gi.log.colors("param","magenta");
+gi.log.colors("exec","green");
+
 
 module.exports = {
   connect : pool.connect
